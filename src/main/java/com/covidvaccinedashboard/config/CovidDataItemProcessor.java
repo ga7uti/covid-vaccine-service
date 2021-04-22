@@ -20,6 +20,7 @@ public class CovidDataItemProcessor implements ItemProcessor<CovidVaccineDto,Cov
         covidVaccine.setPeopleVaccinatedPerHundred(arg0.getPeople_vaccinated_per_hundred());
         covidVaccine.setPeopleFullyVaccinatedPerHundred(arg0.getPeople_fully_vaccinated_per_hundred());
         covidVaccine.setVaccines(arg0.getVaccines());
+        covidVaccine.setDate(arg0.getDate());
         return covidVaccine;
     }
 

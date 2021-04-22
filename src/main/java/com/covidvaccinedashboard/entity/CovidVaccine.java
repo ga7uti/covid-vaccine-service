@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class CovidVaccine {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String country;
     private String isoCode;
@@ -17,6 +17,7 @@ public class CovidVaccine {
     private String peopleVaccinated;
     private String peopleFullyVaccinated;
     private String dailyVaccinations;
+    private String date;
     private String totalVaccinationsPerHundred;
     private String peopleVaccinatedPerHundred;
     private String peopleFullyVaccinatedPerHundred;
@@ -111,6 +112,14 @@ public class CovidVaccine {
         this.vaccines = vaccines;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         return "CovidVaccine [country=" + country + ", dailyVaccinations=" + dailyVaccinations
@@ -122,5 +131,4 @@ public class CovidVaccine {
                 + vaccines + "]";
     }
 
-    
 }
