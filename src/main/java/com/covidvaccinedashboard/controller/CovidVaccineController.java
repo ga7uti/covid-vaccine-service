@@ -17,15 +17,6 @@ public class CovidVaccineController {
     private CovidVaccineRepository covidVaccineRepository;
 
     @GetMapping("/covidvaccine")
-    public ResponseEntity<?> getCovidVaccineDetailsOfCountry(@RequestParam("country") String country) {
-        try {
-            return ResponseEntity.ok(covidVaccineRepository.findByCountry(country));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("{\"message\":\"Something went wrong\"}");
-        }
-    }
-
-    @GetMapping("/covidvaccinebyiso")
     public ResponseEntity<?> getCovidVaccineDetailsOfCountryCode(@RequestParam("iso") String iso) {
         try {
             return ResponseEntity.ok(covidVaccineRepository.findByIsoCode(iso));
