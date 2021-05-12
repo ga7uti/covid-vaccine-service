@@ -16,7 +16,7 @@ import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.ResourceLoader;
 
 @Configuration
 @EnableBatchProcessing
@@ -28,10 +28,13 @@ public class BatchJobConfig {
     @Autowired
     public StepBuilderFactory stepBuilderFactory;
 
+    @Autowired
+    private ResourceLoader resourceLoader;
+
     @Bean
     public FlatFileItemReader<CovidVaccineDto> reader() {
         return new FlatFileItemReaderBuilder<CovidVaccineDto>().name("covidVaccineItemReader")
-                .resource(new ClassPathResource("country_vaccinations.csv")).delimited()
+                .resource(resourceLoader.getResource("s3://covid-vaccine-data/country_vaccinations.csv")).delimited()
                 .names(new String[] { "country", "iso_code", "date", "total_vaccinations", "people_vaccinated",
                         "people_fully_vaccinated", "daily_vaccinations_raw", "daily_vaccinations",
                         "total_vaccinations_per_hundred", "people_vaccinated_per_hundred",
@@ -41,9 +44,7 @@ public class BatchJobConfig {
                     {
                         setTargetType(CovidVaccineDto.class);
                     }
-                })
-                .linesToSkip(1)
-                .build();
+                }).linesToSkip(1).build();
     }
 
     @Bean
