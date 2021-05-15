@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 public class CovidVaccineController {
 
-    @Autowired
     private CovidVaccineRepository covidVaccineRepository;
+
+    @Autowired
+    public CovidVaccineController(CovidVaccineRepository covidVaccineRepository) {
+        this.covidVaccineRepository = covidVaccineRepository;
+    }
 
     @GetMapping("/covidvaccine")
     public ResponseEntity<?> getCovidVaccineDetailsOfCountryCode(@RequestParam("iso") String iso) {
@@ -23,5 +27,6 @@ public class CovidVaccineController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("{\"message\":\"Something went wrong\"}");
         }
+
     }
 }

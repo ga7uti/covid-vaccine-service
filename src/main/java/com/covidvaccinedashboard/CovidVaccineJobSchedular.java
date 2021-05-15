@@ -15,20 +15,23 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CovidVaccineJobSchedular {
+public class CovidVaccineJobSchedular implements ApplicationListener<ApplicationReadyEvent> {
 
     private Logger logger = LoggerFactory.getLogger(CovidVaccineJobSchedular.class);
-    @Autowired
-    JobLauncher jobLauncher;
+    private JobLauncher jobLauncher;
+    private Job job;
 
     @Autowired
-    Job job;
+    public CovidVaccineJobSchedular(JobLauncher jobLauncher, Job job) {
+        this.jobLauncher = jobLauncher;
+        this.job = job;
+    }
 
-    @Scheduled(fixedRate = 300000)
     public void inflateDatabase() throws JobExecutionAlreadyRunningException, JobRestartException,
             JobInstanceAlreadyCompleteException, JobParametersInvalidException {
 
@@ -38,4 +41,14 @@ public class CovidVaccineJobSchedular {
         JobExecution jobExecution = jobLauncher.run(job, parameters);
         logger.info("JobExecution: " + jobExecution.getStatus());
     }
+
+    @Override
+    public void onApplicationEvent(ApplicationReadyEvent arg0) {
+        try {
+            inflateDatabase();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

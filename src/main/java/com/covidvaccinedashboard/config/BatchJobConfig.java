@@ -22,14 +22,19 @@ import org.springframework.core.io.ResourceLoader;
 @EnableBatchProcessing
 public class BatchJobConfig {
 
-    @Autowired
     public JobBuilderFactory jobBuilderFactory;
 
-    @Autowired
     public StepBuilderFactory stepBuilderFactory;
 
-    @Autowired
     private ResourceLoader resourceLoader;
+
+    @Autowired
+    public BatchJobConfig(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory,
+            ResourceLoader resourceLoader) {
+        this.jobBuilderFactory = jobBuilderFactory;
+        this.stepBuilderFactory = stepBuilderFactory;
+        this.resourceLoader = resourceLoader;
+    }
 
     @Bean
     public FlatFileItemReader<CovidVaccineDto> reader() {
